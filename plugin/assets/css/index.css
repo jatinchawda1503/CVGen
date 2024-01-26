@@ -1,0 +1,105 @@
+body {
+    font-family: 'Raleway', sans-serif;;
+    margin: 0;
+    padding: 0;
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.012rem rgba(13,110,253,.25);
+}
+
+:focus-visible {
+    outline: none;
+}
+
+.form-label{
+    margin: 0;
+}
+.heading {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.subheading {
+    text-align: center;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.pdf-input-group-inner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pdfFile-btn{
+    background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+}
+
+#pdfFile-btn:hover{
+    background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+    animation: ease-in-out all 3s;
+}
+
+#file-text{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow : hidden;
+    max-width: 90%;
+    line-height: 1.5;
+}
+
+.advance-options-content{
+    padding: 5px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    font-size: 15spx;
+}
+.adv-mode{
+    margin-bottom: 5px;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 500;
+}
+.advance-options-content .input-group label{
+    margin-right: 10px;
+}
+.advance-options-content .input-group{
+    padding: 3px 0;
+}
+.advance-options-content .input-group input, .advance-options-content .input-group textarea{
+    padding: 1px 5px;
+    font-size: 15px;
+    width: 100%;
+    border-color: #dee2e6;
+}
+
+#submitButton{
+    background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+    margin-top: 10px;
+}
+
+#submitButton:hover{
+    background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+    animation: ease-in-out all 3s;
+}

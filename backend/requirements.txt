@@ -1,0 +1,8 @@
+fastapi==0.109.0
+uvicorn==0.27.0
+faiss_cpu==1.7.4
+llama_cpp_python==0.2.32
+chromadb==0.4.22
+openai
+tiktoken
+python-multipart==0.0.6
