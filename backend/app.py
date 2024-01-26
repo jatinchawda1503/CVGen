@@ -7,11 +7,12 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain import FAISS
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Annotated
-from fastapi import FastAPI,File,Form
+from fastapi import FastAPI,File,Form, UploadFile,Body
 from fastapi.middleware.cors import CORSMiddleware
-
+from typing import Optional,Union
+# import uvicorn
 
 app = FastAPI()
 
@@ -73,19 +74,27 @@ def read_pdf(file):
 async def root():
     return {"message": "Hello World"}
 
-class InputVars(BaseModel):
-    # pdf: Annotated[bytes, File()]
-    position: Annotated[str, Form()]
-    words: Annotated[str, Form()]
-    additional_instruations: Annotated[str, Form()]
+# class InputVars(BaseModel):
+#     pdf =  Annotated[UploadFile, File()]
+#     position: Annotated[str, Form()]
+#     words: Annotated[str, Form()]
+#     additional_instruations: Optional[Annotated[str, Form()]]
+#     jd: Annotated[str,Form()]
 
-from fastapi import HTTPException
 
-@app.post("/CvGen/")
-async def genratecv(input: InputVars):
+@app.post("/CvGen")
+async def genratecv(file: UploadFile = File(), 
+                    position: str = Form(), 
+                    words: str = Form(), 
+                    jd: str = Form(),
+                    additional_instructions: Union[str, None] = Form(default=None)):
     try:
         # Your processing logic here
-        print(input.model_dump())
-        return {'response': input.model_dump()}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(file.filename)    
+        return {'response': file.filename}
+    except:
+        print("not fond error")
+
+
+# if __name__ == '__main__':
+#     uvicorn.run(app, host='127.0.0.1', port=8000)
