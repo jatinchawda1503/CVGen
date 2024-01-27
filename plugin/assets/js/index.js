@@ -1,94 +1,142 @@
+import { pdfParser,docxParser } from "./parser.js";
+
 const realFileBtn = document.getElementById("pdfFile-input");
 const customBtn = document.getElementById("pdfFile-btn");
 const customTxt = document.getElementById("file-text");
 const submitButton = document.getElementById("submitButton");
 const errorContainer = document.getElementById("errorContainer"); // Container to display errors
+const outputArea = document.getElementById("outputArea"); // Container to display output
 
-// Check if a file is stored in localStorage and update the UI accordingly
-const storedFileName = localStorage.getItem("storedFileName");
+var resumeData = "";
+var resumeFilename = "";
 
-if (storedFileName) {
-  customTxt.innerHTML = storedFileName;
+chrome.storage.local.get(['filename', 'resume'], function(result) {
+    if (result['filename'] !== undefined) {
+        customTxt.innerHTML = result['filename'];
+        resumeFilename = result['filename'];
+    } else {
+        customTxt.innerHTML = "No file chosen yet";
+    }
+
+    if (result['resume'] !== undefined) {
+        resumeData = result['resume'];
+    }
+});
+
+
+function extractContent(file){
+    var ext = file.name.split('.').pop();
+    if(ext=="pdf"){
+      var fileReader = new FileReader();
+      fileReader.onload = function () {
+        var typedarray = new Uint8Array(this.result);
+        pdfParser(typedarray).then(function (text) {
+          resumeData = text;
+        }, function (reason)
+          {
+            displayError('Seems this file is broken, please upload another file');
+          });
+      };
+      fileReader.readAsArrayBuffer(file);
+    }else if(ext=="docx"){
+        function setResumeData(result) {
+            var text = result.value;
+            resumeData = text;
+            console.log(resumeData)
+        }
+        docxParser(setResumeData, file);
+    }
+    else{
+        displayError("Please upload a pdf or docx file");
+    }
 }
 
-// chrome.storage.local.get(["filename"]).then((result) => {
-//   console.log("Value is " + result.key);
-//   customTxt.innerHTML = result.key
-// });
-
 customBtn.addEventListener("click", function() {
-  realFileBtn.click();
+    realFileBtn.click();
 });
 
 realFileBtn.addEventListener("change", function() {
-  if (realFileBtn.value) {
-    const fileName = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
-    customTxt.innerHTML = fileName;
-    // Store the file name in localStorage
-    //chrome.storage.local.set({'resume': realFileBtn.files[0]}, function(){})
-    //chrome.storage.local.set({'filename': fileName}, function(){})
-    // localStorage.setItem("storedFileName", realFileBtn.files[0]);
-  } else {
-    customTxt.innerHTML = "No file chosen yet.";
-  }
+    if (realFileBtn.value) {
+        console.log(realFileBtn.value)
+        const fileName = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+        customTxt.innerHTML = fileName;
+        extractContent(realFileBtn.files[0])
+        chrome.storage.local.set({'resume': resumeData}, function() {});
+        chrome.storage.local.set({'filename': fileName}, function() {});
+        
+    } else {
+        customTxt.innerHTML = "No file chosen yet.";
+    }
 });
 
 function displayError(message) {
-  errorContainer.innerHTML = `<div class="alert alert-danger" role="alert">${message}</div>`;
+    errorContainer.innerHTML = `<div class="alert alert-danger" role="alert">${message}</div>`;
 }
 
 function clearErrors() {
-  errorContainer.innerHTML = '';
+    errorContainer.innerHTML = '';
 }
 
+submitButton.addEventListener("click", GenerateCV);
 
-submitButton.addEventListener("click", GenerateCV)
+async function GenerateCV() {
+    clearErrors();
+    outputArea.innerHTML = '';
+    outputArea.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+   
+    const maxWordsValue = document.getElementById("maxWords").value;
+    const positionValue = document.getElementById("position").value;
+    const additionalInstructionsValue = document.getElementById("additionalInstructions").value;
+    const JD = document.getElementById("JD").value;
+    
 
-function GenerateCV() {
-  // Clear previous errors
-  clearErrors();
+    if (!resumeData && !realFileBtn.files[0]) {
+        displayError("Please upload a resume (PDF file).");
+        return;
+    }
 
-  // Validate form fields
-  const storedPdfFile = localStorage.getItem("storedPdfFile"); // Retrieve stored file from localStorage
-  const pdfFile = storedPdfFile ? new Blob([storedPdfFile]) : document.getElementById("pdfFile-input").files[0];
-  const maxWordsValue = document.getElementById("maxWords").value;
-  const positionValue = document.getElementById("position").value;
-  const additionalInstructionsValue = document.getElementById("additionalInstructions").value;
-  const JD = document.getElementById("JD").value;
+    if (!maxWordsValue) {
+        displayError("Please enter the maximum words.");
+        return;
+    }
 
-  if (!pdfFile) {
-    displayError("Please upload a resume (PDF file).");
-    return;
-  }
+    if (!positionValue) {
+        displayError("Please enter the position.");
+        return;
+    }
 
-  if (!maxWordsValue) {
-    displayError("Please enter the maximum words.");
-    return;
-  }
+    // Add additional validation for other fields as needed
 
-  if (!positionValue) {
-    displayError("Please enter the position.");
-    return;
-  }
+    const formData = new FormData();
+    
+    if (resumeData != undefined || resumeData != null || resumeData != "") {
+        formData.append('resume', resumeData);
+    } 
+    formData.append('position', positionValue);
+    formData.append('words', maxWordsValue);
+    formData.append('jd', JD);
+    formData.append('additional_instructions', additionalInstructionsValue);
 
-  // Add additional validation for other fields as needed
+    var response = await fetch('http://127.0.0.1:8000/CvGen/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'multipart/form-data'
+        }
+    })
 
-  const formData = new FormData();
-  formData.append('file', pdfFile);
-  formData.append('position', positionValue);
-  formData.append('words', maxWordsValue);
-  formData.append('jd', JD);
-  formData.append('additional_instructions', additionalInstructionsValue);
+    var reader = response.body.getReader();
+    var decoder = new TextDecoder('utf-8');
 
-  fetch('http://127.0.0.1:8000/CvGen', {
-    method: 'POST',
-    body: formData,
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Server response:', data);
-  })
-  .catch(error => {
-    console.error('Error sending POST request:', error);
-  });
+    reader.read().then(function processResult(result) {
+        if (result.done) return;
+        let token = decoder.decode(result.value);
+        console.log(result)
+        if (token.endsWith('.') || token.endsWith('!') || token.endsWith('?')) {
+            outputArea.innerHTML += token;
+        } else {
+            outputArea.innerHTML += token;
+        }
+        return reader.read().then(processResult);
+    });
 }

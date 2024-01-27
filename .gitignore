@@ -154,3 +154,5 @@ cython_debug/
 backend/model
 backend/notebooks
 backend/asset
+
+.vscode/
