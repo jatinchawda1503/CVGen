@@ -82,7 +82,9 @@ submitButton.addEventListener("click", GenerateCV);
 async function GenerateCV() {
     clearErrors();
     outputArea.innerHTML = '';
+    outputArea.style.display = "none";
     outputArea.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    submitButton.setAttribute("disabled", "disabled");
    
     const maxWordsValue = document.getElementById("maxWords").value;
     const positionValue = document.getElementById("position").value;
@@ -123,15 +125,20 @@ async function GenerateCV() {
         headers: {
             'Accept': 'multipart/form-data'
         }
-    })
+    }).then(
+        function(response){
+            var reader = response.body.getReader();
+            var decoder = new TextDecoder('utf-8');
+            outputArea.style.display = "block";
+            reader.read().then(function processResult(result) {
+                if (result.done) return;
+                let token = decoder.decode(result.value);
+                outputArea.innerHTML += token;
+                return reader.read().then(processResult);
+            });
+            submitButton.removeAttribute("disabled");
+        }
+    )
 
-    var reader = response.body.getReader();
-    var decoder = new TextDecoder('utf-8');
-
-    reader.read().then(function processResult(result) {
-        if (result.done) return;
-        let token = decoder.decode(result.value);
-        outputArea.innerHTML += token;
-        return reader.read().then(processResult);
-    });
+    
 }
