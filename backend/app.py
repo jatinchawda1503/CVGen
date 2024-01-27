@@ -3,6 +3,8 @@ import sys
 sys.path.append(CONFIG.get_root_path())
 from prompt.prompts import CV_PROMPT
 
+import logging
+logger = logging.getLogger("uvicorn")
 
 import asyncio
 from PyPDF2 import PdfReader
@@ -69,7 +71,7 @@ async def send_response(pdf_content:str,
     llm = get_model()
     chain = LLMChain(
             llm=llm,
-            prompt=PromptTemplate(template=CV_PROMPT, input_variables=["resume","jd","position","words","additional_instructions"])
+            prompt=PromptTemplate(template=CV_PROMPT, input_variables=["resume","jd","position","words","additional_instructions"]),
         )
     task = asyncio.create_task(chain.ainvoke({"jd": jd, "resume": pdf_content, "words" : words, "position" : position,"additional_instructions":additional_instructions}))
     

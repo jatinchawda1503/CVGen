@@ -105,3 +105,13 @@ body {
     color: #fff;
     animation: ease-in-out all 3s;
 }
+
+.output-area{
+    height: 50vh;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-top: 10px;
+    padding: 10px 15px;
+    text-align: justify;
+    overflow-y:scroll;
+}
