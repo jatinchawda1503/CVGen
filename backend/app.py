@@ -104,7 +104,7 @@ async def genratecv(resume: str = Form(),
         #     "file": resume,
         # }}
         response = send_response(resume,jd,words,position,additional_instructions)
-        return StreamingResponse(response,  media_type="text/event-stream")
+        return StreamingResponse(response,  media_type="text/html")
     except Exception as e:
         print("Error occured while generating CV",e)
         raise HTTPException(status_code=500,detail="Error occured while generating CV, {e}")

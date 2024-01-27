@@ -131,12 +131,7 @@ async function GenerateCV() {
     reader.read().then(function processResult(result) {
         if (result.done) return;
         let token = decoder.decode(result.value);
-        console.log(result)
-        if (token.endsWith('.') || token.endsWith('!') || token.endsWith('?')) {
-            outputArea.innerHTML += token;
-        } else {
-            outputArea.innerHTML += token;
-        }
+        outputArea.innerHTML += token;
         return reader.read().then(processResult);
     });
 }
