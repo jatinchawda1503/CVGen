@@ -1,4 +1,3 @@
-import sys
 import logging
 import asyncio
 from PyPDF2 import PdfReader
@@ -12,9 +11,9 @@ from typing import Union, AsyncIterable
 from langchain.callbacks import AsyncIteratorCallbackHandler
 import uvicorn
 from config import CONFIG
-from prompts.prompts import CV_PROMPT  # Fix incorrect import path
+from prompt.prompts import CV_PROMPT  # Fix incorrect import path
 
-sys.path.append(CONFIG.get_root_path())
+
 logger = logging.getLogger("uvicorn")
 app = FastAPI()
 
