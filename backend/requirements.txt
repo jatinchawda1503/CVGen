@@ -4,7 +4,8 @@ openai
 tiktoken
 python-multipart==0.0.6
 pylint
-
+langchain-openai==0.0.5
+langchain==0.1.2
 
 # faiss_cpu==1.7.4
 # llama_cpp_python==0.2.32

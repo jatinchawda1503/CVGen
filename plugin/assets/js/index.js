@@ -1,5 +1,6 @@
 import { pdfParser,docxParser } from "./parser.js";
 
+
 const realFileBtn = document.getElementById("pdfFile-input");
 const customBtn = document.getElementById("pdfFile-btn");
 const customTxt = document.getElementById("file-text");
@@ -83,8 +84,7 @@ async function GenerateCV() {
     clearErrors();
     outputArea.innerHTML = '';
     outputArea.style.display = "none";
-    outputArea.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-    submitButton.setAttribute("disabled", "disabled");
+    submitButton.disabled = true;
    
     const maxWordsValue = document.getElementById("maxWords").value;
     const positionValue = document.getElementById("position").value;
@@ -129,14 +129,15 @@ async function GenerateCV() {
         function(response){
             var reader = response.body.getReader();
             var decoder = new TextDecoder('utf-8');
-            outputArea.style.display = "block";
             reader.read().then(function processResult(result) {
                 if (result.done) return;
+                outputArea.style.display = "block";
+                outputArea.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
                 let token = decoder.decode(result.value);
                 outputArea.innerHTML += token;
                 return reader.read().then(processResult);
             });
-            submitButton.removeAttribute("disabled");
+            submitButton.disabled = false;
         }
     )
 

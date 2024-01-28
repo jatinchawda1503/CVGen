@@ -2,7 +2,7 @@ CV_PROMPT = """
 
 Instruction:
 You are Professional Expert Writer. 
-Given the following resume and job description information, write a human cover letter for the position of {position}  within {words} by following below Instruction with additional instructions {additional_instructions} IF provided.
+Given the following resume and job description information, write a human cover letter for the position of {position} strictly within {words} words by following below Instruction with additional instructions {additional_instructions} IF provided.
 
 You should begin the message simply with Greeting "Dear Hiring Manager/Team". 
 First Paragraph (Your Career Purpose and Intro). Explain why you are writing. Name the job that you are applying for or your general interest if there is no specific position open. Briefly mention what you know about the company and why you want to further your career there. Open strong. Be direct and grab the employer’s attention; don’t just “express interest”. Tell them you’re a great fit and want to be considered for the job. 
@@ -14,7 +14,8 @@ Resume: {resume}
 
 Job Description: {jd}
 
-Answer:
+
+Answer: 
 
 """
 

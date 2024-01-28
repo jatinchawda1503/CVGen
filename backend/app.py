@@ -1,9 +1,12 @@
 import logging
 import asyncio
 from PyPDF2 import PdfReader
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chains import LLMChain
+from langchain.chains.openai_functions.base import create_structured_output_runnable
 from langchain.prompts import PromptTemplate
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -12,7 +15,7 @@ from langchain.callbacks import AsyncIteratorCallbackHandler
 import uvicorn
 from config import CONFIG
 from prompt.prompts import CV_PROMPT  # Fix incorrect import path
-
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger("uvicorn")
 app = FastAPI()
@@ -35,27 +38,12 @@ def get_model():
         temperature=0.8,
         openai_api_key=openai_api_key,
         streaming=True,
-        callbacks=[callback]
+        callbacks=[callback],
+        verbose=True
     )
 
-
-def read_pdf(file):
-    if file is not None:
-        try:
-            pdf = PdfReader(file)
-            text = ""
-            for page in pdf.pages:
-                text += page.extract_text()
-            processed_text = text
-        except Exception as e:
-            processed_text = None
-            print(f"Error reading PDF: {e}")
-    else:
-        print("Cannot read the file")
-        processed_text = None
-
-    return processed_text
-
+class OutputStrucutre(BaseModel):
+    answer: str = Field(description= "Answer in markdown format")
 
 async def send_response(pdf_content: str,
                         jd: str,
@@ -63,17 +51,27 @@ async def send_response(pdf_content: str,
                         position: str,
                         additional_instructions: str) -> AsyncIterable[str]:
     llm = get_model()
+    markdown_schema = ResponseSchema(name="Answer", description="Return response in markdown format")
+    struct_parser = JsonOutputFunctionsParser()
     chain = LLMChain(
         llm=llm,
-        prompt=PromptTemplate(template=CV_PROMPT, input_variables=["resume", "jd", "position", "words",
-                                                                   "additional_instructions"]),
+        prompt=PromptTemplate(template=CV_PROMPT, 
+                              input_variables=["resume", "jd", "position", "words",
+                                                                   "additional_instructions"], 
+                              #partial_variables={"format_instructions": struct_parser.get_format_instructions()}
+                              ),
+            #output_parser=struct_parser,
     )
     task = asyncio.create_task(
-        chain.ainvoke({"jd": jd, "resume": pdf_content, "words": words, "position": position,
+        chain.ainvoke({"jd": jd, 
+                       "resume": pdf_content, 
+                       "words": words, 
+                       "position": position,
                        "additional_instructions": additional_instructions}))
 
     try:
         async for token in callback.aiter():
+            print(token)
             yield token
     except Exception as e:
         print(e)
@@ -81,9 +79,6 @@ async def send_response(pdf_content: str,
     finally:
         callback.done.set()
     await task
-
-
-llm = get_model()
 
 
 @app.post("/CvGen/")
