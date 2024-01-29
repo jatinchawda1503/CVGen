@@ -7,4 +7,4 @@ pylint
 langchain-openai==0.0.5
 langchain==0.1.2
 pytest
-dotenv
+python-dotenv
