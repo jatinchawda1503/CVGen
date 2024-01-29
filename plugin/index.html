@@ -48,10 +48,29 @@
             <button class="btn" type="submit" id="submitButton">Generate</button>
         </section>
 
-        <section>
-            <div class="output-area" id="outputArea" style="display: none;">
-                
+        <section class="output-section" id="OutputSection" style="display: none;">
+            <div class="clipboard-area">
+                <button class="btn-clipbord" data-clipboard-target="#outputArea" role="button">
+                    <svg viewBox="0 0 42 58" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M42 27.4C42 27.3 42 27.2 41.9 27.1V27C41.9 26.9 41.8 26.8 41.7 26.7L33.9 19C33.8 18.9 33.7 18.9 33.6 18.8C33.6 18.8 33.6 18.8 33.5 18.8C33.4 18.8 33.3 18.7 33.2 18.7H28.7V8.9C28.7 8.9 28.7 8.9 28.7 8.8C28.7 8.7 28.7 8.6 28.6 8.5V8.4C28.6 8.3 28.5 8.2 28.4 8.1L20.6 0.3C20.5 0.2 20.4 0.2 20.3 0.0999999H20.2C20.1 -9.68575e-08 20 0 19.9 0C19.9 0 19.9 0 19.8 0H1C0.4 0 0 0.4 0 1V38.3C0 38.9 0.4 39.3 1 39.3H13.3V57C13.3 57.6 13.7 58 14.3 58H41C41.6 58 42 57.6 42 57V27.4C42 27.5 42 27.5 42 27.4ZM34.2 22.1L38.6 26.5H34.2V22.1ZM20.8 3.4L25.2 7.8H20.8V3.4ZM2 2H18.8V8.8C18.8 9.4 19.2 9.8 19.8 9.8H26.6V37.3H14.3H2V2ZM15.3 56V39.3H27.6C28.2 39.3 28.6 38.9 28.6 38.3V20.7H32.1V27.5C32.1 28.1 32.5 28.5 33.1 28.5H40V56H15.3Z" fill="black"/>
+                    </svg>
+                    Copy 
+                </button>
             </div>
+            <div class="output-area" id="outputArea">
+
+Dear Hiring Manager/Team,
+
+I am writing to express my strong interest in the Test position at your company. With a background as a Machine Learning Engineer at Solvay, I have honed my skills in developing and deploying machine learning models, contributing significantly to digital innovation and reducing research-to-production time. My expertise in Python, machine learning, data analytics, and web development closely aligns with the requirements of the test position.
+
+I am confident that my experience in driving end-to-end applications, collaborating cross-functionally, and implementing effective A/B testing methodologies makes me a perfect fit for the role. I am eager to bring my professional contributions to your team and would welcome the opportunity to discuss how I can contribute to your company's success. Thank you for considering my application and I look forward to the possibility of discussing the position in further detail.
+
+Sincerely,
+Jatin Chawda
+                
+              
+            </div>
+              
         </section>
 
     </div>
@@ -60,6 +79,6 @@
     <script type="text/javascript" src="./assets/js/mammoth.browser.js"></script>
     <script type="text/javascript" src="./assets/js/pdf.worker.min.js"></script>
     <script type="text/javascript" src="./assets/js/pdf.min.js"></script>   
-    <script type="text/javascript" src="./assets/js/marked.min.js"></script>  
+    <script type="text/javascript" src="./assets/js/clipboard.min.js"></script>  
 </body>
 </html>

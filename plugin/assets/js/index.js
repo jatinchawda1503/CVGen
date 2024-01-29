@@ -5,8 +5,9 @@ const realFileBtn = document.getElementById("pdfFile-input");
 const customBtn = document.getElementById("pdfFile-btn");
 const customTxt = document.getElementById("file-text");
 const submitButton = document.getElementById("submitButton");
-const errorContainer = document.getElementById("errorContainer"); // Container to display errors
-const outputArea = document.getElementById("outputArea"); // Container to display output
+const errorContainer = document.getElementById("errorContainer"); 
+const outputArea = document.getElementById("outputArea"); 
+const OutputSection = document.getElementById("OutputSection"); 
 
 var resumeData = "";
 var resumeFilename = "";
@@ -82,8 +83,8 @@ submitButton.addEventListener("click", GenerateCV);
 
 async function GenerateCV() {
     clearErrors();
+    OutputSection.style.display = "none";
     outputArea.innerHTML = '';
-    outputArea.style.display = "none";
     submitButton.disabled = true;
    
     const maxWordsValue = document.getElementById("maxWords").value;
@@ -131,10 +132,9 @@ async function GenerateCV() {
             var decoder = new TextDecoder('utf-8');
             reader.read().then(function processResult(result) {
                 if (result.done) return;
-                outputArea.style.display = "block";
-                outputArea.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
+                OutputSection.style.display = "block";
+                OutputSection.scrollIntoView({behavior: "smooth", duration: 1000});
                 let token = decoder.decode(result.value);
-                console.log(token)
                 outputArea.innerHTML += token.replace(/\n/g, '<br>');
                 return reader.read().then(processResult);
             })
@@ -142,3 +142,7 @@ async function GenerateCV() {
         submitButton.disabled = false;
     })
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    new ClipboardJS('.btn-clipbord');
+})

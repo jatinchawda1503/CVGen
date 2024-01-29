@@ -109,8 +109,46 @@ body {
 .output-area{
     min-height: 100vh;
     border: 1px solid #ccc;
-    margin-top: 10px;
-    margin-top: 10px;
     padding: 10px 15px;
     text-align: justify;
+}
+
+
+.output-section{
+    position: relative;
+}
+.clipboard-area{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.btn-clipbord{
+    border: 1px solid #ccc;
+    padding: 1px 10px;
+}
+.btn-clipbord svg{
+    width: 16px;
+    height: 16px;
+    fill: #000;
+}
+
+body::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb
+{
+	background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0082c8, #667db6, #667db6, #0082c8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border: 1px solid #0082c8;
 }
