@@ -1,0 +1,36 @@
+name: Run Pytest
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Start the app
+      run: |
+        uvicorn app:app --host 0.0.0.0 --port 8000 &
+        APP_PID=$!
+        echo "APP_PID=$APP_PID" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: |
+        pytest
+
+    - name: Stop the app
+      run: |
+        kill $APP_PID

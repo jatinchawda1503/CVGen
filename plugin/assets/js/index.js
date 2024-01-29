@@ -134,12 +134,11 @@ async function GenerateCV() {
                 outputArea.style.display = "block";
                 outputArea.scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
                 let token = decoder.decode(result.value);
-                outputArea.innerHTML += token;
+                console.log(token)
+                outputArea.innerHTML += token.replace(/\n/g, '<br>');
                 return reader.read().then(processResult);
-            });
-            submitButton.disabled = false;
-        }
-    )
-
-    
+            })
+        }).finally(()=>{
+        submitButton.disabled = false;
+    })
 }
