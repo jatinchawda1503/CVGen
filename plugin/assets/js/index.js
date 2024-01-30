@@ -12,6 +12,8 @@ const OutputSection = document.getElementById("OutputSection");
 var resumeData = "";
 var resumeFilename = "";
 
+
+
 chrome.storage.local.get(['filename', 'resume'], function(result) {
     if (result['filename'] !== undefined) {
         customTxt.innerHTML = result['filename'];
@@ -59,7 +61,6 @@ customBtn.addEventListener("click", function() {
 
 realFileBtn.addEventListener("change", function() {
     if (realFileBtn.value) {
-        console.log(realFileBtn.value)
         const fileName = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
         customTxt.innerHTML = fileName;
         extractContent(realFileBtn.files[0])
