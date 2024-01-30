@@ -13,10 +13,7 @@ from langchain.document_transformers import Html2TextTransformer
 import uvicorn
 from config import CONFIG
 from prompt.prompts import CV_PROMPT, JD_RAW  # Fix incorrect import path
-from pydantic import BaseModel
 
-
-logger = logging.getLogger("uvicorn")
 app = FastAPI()
 
 app.add_middleware(
@@ -105,7 +102,6 @@ async def generate_cv(resume: str = Form(),
                       jd: str = Form(),
                       additional_instructions: Union[str, None] = Form(default=None)):
     try:
-        print(option)
         if (option == 'detectByUrl'):
             description = await getJDfromUrl(jd)
         else:
