@@ -27,7 +27,7 @@
                 <!-- <div class="adv-mode"><span>Advanced Mode</span></div> -->
                 <div class="input-group align-items-center">
                     <label for="maxWords" class="form-label">Max Words:</label>
-                    <input type="text" class="form-control" id="maxWords" name="maxWords" value="100" required>
+                    <input type="text"  inputmode="numeric"  pattern="[0-9]" class="form-control" id="maxWords" name="maxWords" value="100" required>
                 </div>
                 <div class="input-group align-items-center">
                     <label for="position" class="form-label">Position:</label>
@@ -37,9 +37,31 @@
                     <label for="additionalInstructions">Additional Instructions:</label>
                     <textarea id="additionalInstructions" name="additionalInstructions" placeholder="Eg. Extract Skills from Job Description and based on that genrate coverletter"></textarea>
                 </div>
-                <div class="input-group align-items-center">
+                <!-- <div class="input-group align-items-center">
                     <label for="JD">Job Description:</label>
                     <textarea id="JD" name="JD" placeholder="Enter Job Description" required></textarea>
+                </div> -->
+                <div class="d-flex align-items-center justify-content-center mt-2 mb-2 radio-area" id="RadioArea">
+                    <div class="form-check ms-2 me-2">
+                        <input class="form-check-input" type="radio" name="JDOption" id="detectByUrl" value="detectByUrl" checked>
+                        <label class="form-check-label" for="detectByUrl">Detect by URL</label>
+                    </div>
+                    <div class="form-check ms-2 me-2">
+                        <input class="form-check-input" type="radio" name="JDOption" id="enterManually" value="enterManually">
+                        <label class="form-check-label" for="enterManually">Enter Manually</label>
+                    </div>
+                </div>
+
+                <!-- URL input -->
+                <div class="input-group align-items-center" id="urlInput">
+                    <label for="JDUrl">Job Description URL:</label>
+                    <input type="url" class="form-control" id="JDUrl" name="JDUrl" readonly>
+                </div>
+
+                <!-- Textarea for manual entry -->
+                <div class="input-group align-items-center" id="manualEntry" style="display: none;">
+                    <label for="JD">Job Description:</label>
+                    <textarea id="JD" name="JD" id="JDManual" placeholder="Enter Job Description"></textarea>
                 </div>
             </div>
         </section>
