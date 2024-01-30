@@ -8,10 +8,18 @@ const submitButton = document.getElementById("submitButton");
 const errorContainer = document.getElementById("errorContainer"); 
 const outputArea = document.getElementById("outputArea"); 
 const OutputSection = document.getElementById("OutputSection"); 
+const RadioArea = document.getElementById("RadioArea")
+const detectByUrlRadio = document.getElementById('detectByUrl');
+const enterManuallyRadio = document.getElementById('enterManually');
+const urlInput = document.getElementById('urlInput');
+const manualEntry = document.getElementById('manualEntry');
+const JDUrl = document.getElementById('JDUrl');
+const JDManual = document.getElementById('JDManual');
+
 
 var resumeData = "";
 var resumeFilename = "";
-
+var dataURL = '';
 
 
 chrome.storage.local.get(['filename', 'resume'], function(result) {
@@ -80,6 +88,71 @@ function clearErrors() {
     errorContainer.innerHTML = '';
 }
 
+detectByUrlRadio.addEventListener('change', function() {
+    urlInput.style.display = 'block';
+    manualEntry.style.display = 'none';
+});
+
+enterManuallyRadio.addEventListener('change', function() {
+    urlInput.style.display = 'none';
+    manualEntry.style.display = 'block';
+});
+
+async function getCurrentTabAPI() {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    let url = tab.url;
+    if (isLinkedInJobUrl(url)) {
+        const jobId = extractJobIdFromUrl(url);
+        if (jobId) {
+            const newUrl = `https://www.linkedin.com/jobs/view/${jobId}`;
+            dataURL = newUrl;
+            JDUrl.value = dataURL;
+            console.log("New LinkedIn Job URL:", newUrl);
+        } else {
+            displayError("Cannot extract jobId from the URL.");
+        }
+    } else {
+        dataURL = tab.url;
+        JDUrl.value = dataURL;
+    }
+    
+  }
+  
+  function isLinkedInJobUrl(url) {
+    // Define the regex pattern for LinkedIn job URLs
+    const linkedInJobUrlPattern = /^https:\/\/www\.linkedin\.com\/jobs\/(view\/\d+|search\/\?currentJobId=\d+)/;
+
+    // Test if the URL matches the pattern
+    if (linkedInJobUrlPattern.test(url)) {
+        return true;
+    }
+
+    // Additional check for general LinkedIn URLs
+    const linkedInGeneralUrlPattern = /^https:\/\/www\.linkedin\.com\//;
+    if (linkedInGeneralUrlPattern.test(url)) {
+        displayError("Cannot extract jobId from the URL. Please open a LinkedIn job posting URL.");
+        return false;
+    }
+
+    return false;
+}
+
+
+function extractJobIdFromUrl(url) {
+    // Extract jobId from the URL
+    const match = url.match(/(?:view\/|currentJobId=)(\d+)/);
+
+    // If a match is found, return the jobId
+    if (match && match[1]) {
+        return match[1];
+    }
+
+    return null;
+}
+
+
+
 submitButton.addEventListener("click", GenerateCV);
 
 async function GenerateCV() {
@@ -91,15 +164,21 @@ async function GenerateCV() {
     const maxWordsValue = document.getElementById("maxWords").value;
     const positionValue = document.getElementById("position").value;
     const additionalInstructionsValue = document.getElementById("additionalInstructions").value;
-    const JD = document.getElementById("JD").value;
-    
+    const Radiovalue = document.querySelector('input[name="JDOption"]:checked').value;
+    let JD
+
+    if (Radiovalue == "detectByUrl") {
+        JD = JDUrl.value;
+    } else if (Radiovalue == "enterManually") {
+        JD = JDManual.value;
+    }
 
     if (!resumeData && !realFileBtn.files[0]) {
         displayError("Please upload a resume (PDF file).");
         return;
     }
 
-    if (!maxWordsValue) {
+    if (!maxWordsValue && !isNaN(maxWordsValue)) {
         displayError("Please enter the maximum words.");
         return;
     }
@@ -118,6 +197,7 @@ async function GenerateCV() {
     } 
     formData.append('position', positionValue);
     formData.append('words', maxWordsValue);
+    formData.append("option", Radiovalue)
     formData.append('jd', JD);
     formData.append('additional_instructions', additionalInstructionsValue);
 
@@ -146,4 +226,6 @@ async function GenerateCV() {
 
 document.addEventListener('DOMContentLoaded', function() {
     new ClipboardJS('.btn-clipbord');
+    getCurrentTabAPI();
 })
+

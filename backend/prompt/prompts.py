@@ -21,7 +21,7 @@ Answer:
 """
 
 JD_RAW = """
-Given the text from a webpage of a job description.
+Given the raw extracted html text from a webpage of a job description.
 Extract the sections which contain information about the company and job inclduing but not limited to the overview, responsibilities and qualifications. 
 Exclude any benfits information.
 
