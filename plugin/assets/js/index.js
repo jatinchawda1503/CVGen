@@ -14,7 +14,7 @@ const enterManuallyRadio = document.getElementById('enterManually');
 const urlInput = document.getElementById('urlInput');
 const manualEntry = document.getElementById('manualEntry');
 const JDUrl = document.getElementById('JDUrl');
-const JDManual = document.getElementById('JDManual');
+
 
 
 var resumeData = "";
@@ -165,6 +165,7 @@ async function GenerateCV() {
     const positionValue = document.getElementById("position").value;
     const additionalInstructionsValue = document.getElementById("additionalInstructions").value;
     const Radiovalue = document.querySelector('input[name="JDOption"]:checked').value;
+    const JDManual = document.getElementById('JD');
     let JD
 
     if (Radiovalue == "detectByUrl") {

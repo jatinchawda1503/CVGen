@@ -85,7 +85,7 @@ async def getJDfromUrl(url):
     raw = loader.load()
     transfomer = Html2TextTransformer()
     raw_text = transfomer.transform_documents(raw)[0].page_content
-    llm=ChatOpenAI(model="gpt-3.5-turbo-1106", 
+    llm=ChatOpenAI(model="gpt-3.5-turbo-16k", #gpt-3.5-turbo-1106
                    openai_api_key=openai_api_key, 
                     temperature=0.9)
     prompt = PromptTemplate(template=JD_RAW, 
@@ -106,6 +106,7 @@ async def generate_cv(resume: str = Form(),
             description = await getJDfromUrl(jd)
         else:
             description = jd  
+        print("Extracted description, generating CV...")
         response = send_response(resume, description, words, position, additional_instructions)
         return StreamingResponse(response, media_type="text/html")
     except Exception as e:
