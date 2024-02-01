@@ -13,6 +13,7 @@ from langchain.document_transformers import Html2TextTransformer
 import uvicorn
 from config import CONFIG
 from prompt.prompts import CV_PROMPT, JD_RAW  # Fix incorrect import path
+import time
 
 app = FastAPI()
 
@@ -81,17 +82,23 @@ schema = {
  }
     
 async def getJDfromUrl(url):
+    start_time = time.time()
     loader = AsyncHtmlLoader([url])
     raw = loader.load()
+    print("time took to load html", time.time() - start_time)
     transfomer = Html2TextTransformer()
+    print("time took to load transform", time.time() - start_time)
     raw_text = transfomer.transform_documents(raw)[0].page_content
-    llm=ChatOpenAI(model="gpt-3.5-turbo-16k", #gpt-3.5-turbo-1106
+    print("time took to extract raw text", time.time() - start_time)
+    llm=ChatOpenAI(model="gpt-3.5-turbo-1106", #gpt-3.5-turbo-1106 , gpt-3.5-turbo-16k
                    openai_api_key=openai_api_key, 
                     temperature=0.9)
     prompt = PromptTemplate(template=JD_RAW, 
                             input_variables=["raw_text"])
     chain = create_extraction_chain(llm=llm, prompt=prompt, schema=schema)
+    print("time took to create chain", time.time() - start_time)
     response = chain.invoke({raw_text})
+    print("time took to extract job description", time.time() - start_time)
     return response['text'][0]['job_description']
     
 @app.post("/CvGen/")
