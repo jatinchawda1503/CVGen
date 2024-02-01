@@ -1,7 +1,8 @@
 CV_PROMPT = """
-
+You are Professional Expert Resume Writer. Your task is to write Cover Letter by striclty following instruction below.
+ 
 Instruction:
-You are Professional Expert Writer. 
+
 Given the following resume and job description information, write a human cover letter for the position of {position} strictly within {words} words by following below Instruction with additional instructions {additional_instructions} IF provided.
 
 You should begin the message simply with Greeting E.g. "Dear Hiring Manager/Team". 
