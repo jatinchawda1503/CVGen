@@ -27,9 +27,13 @@ To configure the application, you need to set the OpenAI API key in the `.env` f
 1. Copy the `.env.example` file and rename it to `.env`.
 2. Open the `.env` file and replace `YOUR_OPENAI_API_KEY` with your actual OpenAI API key.
 
+## Iput Interface
+
+![Input](./img/interface.png)
+
 ## Sample Output
 
-### 1. Input 
+### 1. Sample JD 
 ```
 Job brief
 We are looking for a passionate certified Data Analyst at Sample Company. The successful candidate will turn data into information, information into insight and insight into business decisions.
@@ -54,7 +58,6 @@ Strong analytical skills with the ability to collect, organize, analyze, and dis
 Adept at queries, report writing and presenting findings
 BS in Mathematics, Economics, Computer Science, Information Management or Statistics
 ```
-![Input](./img/interface.png)
 
 ### 2. Sample Resume
 ```
@@ -141,7 +144,7 @@ Python Developer with a proven track record of developing and deploying web appl
 
 ```
 
-### 3. Sample Output 
+### 3. AI Genrated Cover Letter  
 
 ```
 Dear Hiring Manager,
