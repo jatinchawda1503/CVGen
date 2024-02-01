@@ -29,7 +29,7 @@ To configure the application, you need to set the OpenAI API key in the `.env` f
 
 ## Sample Output
 
-1. Input 
+### 1. Input 
 ```
 Job brief
 We are looking for a passionate certified Data Analyst at Sample Company. The successful candidate will turn data into information, information into insight and insight into business decisions.
@@ -54,9 +54,9 @@ Strong analytical skills with the ability to collect, organize, analyze, and dis
 Adept at queries, report writing and presenting findings
 BS in Mathematics, Economics, Computer Science, Information Management or Statistics
 ```
+![Input](./img/interface.png)
 
-
-2. Sample Resume
+### 2. Sample Resume
 ```
 # Zara Davenport
 
@@ -141,7 +141,7 @@ Python Developer with a proven track record of developing and deploying web appl
 
 ```
 
-3. Sample Output 
+### 3. Sample Output 
 
 ```
 Dear Hiring Manager,
