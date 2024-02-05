@@ -1,3 +1,6 @@
+""" Prompt file """
+
+
 CV_PROMPT = """
 You are Professional Expert Resume Writer. Your task is to write Cover Letter by striclty following instruction below.
  

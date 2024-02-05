@@ -29,7 +29,7 @@ To configure the application, you need to set the OpenAI API key in the `.env` f
 
 ## Iput Interface
 
-![Input](./img/interface.png)
+![Input](./.github/img/interface.png)
 
 ## Sample Output
 
