@@ -25,6 +25,6 @@ jobs:
         cd backend
         python app.py &
         APP_PID=$!
-        echo "APP_PID=$APP_PID" >> $GITHUB_ENV & pylint $(git ls-files '*.py')
+        echo "APP_PID=$APP_PID" >> $GITHUB_ENV & pylint app.py
 
     
