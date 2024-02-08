@@ -27,7 +27,9 @@ jobs:
         python app.py &
         APP_PID=$!
         echo "APP_PID=$APP_PID" >> $GITHUB_ENV
-
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
     - name: Run tests
       run: |
         pytest
