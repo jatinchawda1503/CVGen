@@ -6,5 +6,6 @@ python-multipart==0.0.6
 pylint
 langchain-openai==0.0.5
 langchain==0.1.2
+langchain-community
 pytest
 python-dotenv
