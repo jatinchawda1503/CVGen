@@ -10,3 +10,4 @@ langchain-community
 pytest
 python-dotenv
 beautifulsoup4
+html2text
